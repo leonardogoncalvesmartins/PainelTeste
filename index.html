@@ -86,7 +86,7 @@ async function start(){const key=await crypto.subtle.importKey('raw',K,'AES-GCM'
 const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:all.slice(0,12)},key,all.slice(12));
 const txt=await new Response(new Blob([pt]).stream().pipeThrough(new DecompressionStream('gzip'))).text();
 $('gate').hidden=true;$('who').textContent=ME.name;$('adm').hidden=ME.role!=='admin';if(!started){started=true;window.__start(JSON.parse(txt))}}
-$('lf').onsubmit=async e=>{e.preventDefault();if(!db)return;const u=$('lu').value.trim().toLowerCase(),p=$('lp').value;$('lm').textContent='';$('lb').disabled=true;
+$('lf').onsubmit=async e=>{e.preventDefault();const u=$('lu').value.trim().toLowerCase(),p=$('lp').value;$('lm').textContent='';$('lb').disabled=true;
 try{if(Date.now()<lock)throw new Error('Muitas tentativas. Aguarde 1 minuto.');
 const d=await getUser(u);if(!d||d.active===false){await new Promise(r=>setTimeout(r,800));throw 0}
 let pl;try{pl=await unwrap(d,p)}catch{throw 0}K=unb(pl.k);ME={u,name:d.name,role:pl.r};fails=0;await start()}
